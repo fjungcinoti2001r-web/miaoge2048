@@ -155,7 +155,7 @@
 
   .poster-card-1to1 {
     width: min(340px, 86vw, 68vh);
-    aspect-ratio: 1 / 1; /* 严格强制正方形画幅 */
+    aspect-ratio: 1 / 1;
     background: #fff9ed;
     border: 3px solid #fde68a;
     border-radius: 24px;
@@ -191,7 +191,6 @@
     margin: -2px 0 0 0;
   }
 
-  /* 居中立绘容器（放大并优化视觉展示） */
   .poster-avatar-holder {
     width: 74px;
     height: 74px;
@@ -230,15 +229,27 @@
     line-height: 15px;
   }
 
-  /* 战力展示框 */
+  /* 双战力展示框 */
   .poster-score-board {
     background: #ffffff;
     border: 1.5px solid #e5e7eb;
     border-radius: 12px;
-    width: 92%;
-    padding: 3px 0 4px 0;
-    text-align: center;
+    width: 94%;
+    padding: 4px 6px;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .poster-score-col {
+    flex: 1;
+    text-align: center;
+  }
+  .poster-score-divider {
+    width: 1.5px;
+    height: 28px;
+    background: #fed7aa;
+    margin: 0 4px;
   }
   .poster-score-label {
     color: #4b5563;
@@ -248,13 +259,13 @@
   }
   .poster-score-value {
     color: #c2410c;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 900;
-    line-height: 28px;
+    line-height: 26px;
     font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
   }
 
-  /* 底部双层药丸样式（严格保持不变） */
+  /* 底部两行保持原样 */
   .poster-bottom-group {
     display: flex;
     flex-direction: column;
@@ -339,21 +350,19 @@
 </div>
 
 <div id="arcade-container">
-  <!-- 精简后的顶部栏 -->
   <div class="top-bar">
-    <div class="header-layout"><img src="assets/avatar-logo.png" class="logo-img"><div class="title-group"><h1>苗哥2048</h1><div class="subtitle">演员谢苗超话</div></div></div>
+    <div class="header-layout"><img src="assets/avatar-logo.png" class="logo-img"><div class="title-group"><h1>苗哥2048</h1><div class="subtitle">演员谢苗粉丝向</div></div></div>
     <div class="header-layout">
       <button class="icon-btn" id="bgm-toggle" title="背景音乐">🎵</button>
       <button class="icon-btn" id="settings-toggle" title="设置">⚙️</button>
       <button class="icon-btn" id="poster-toggle" title="成绩单">📸</button>
       <div class="score-group-top">
-        <div class="score-board"><div class="score-label">本局战力</div><div class="score-val" id="score">0</div><div id="add" style="display:none;"></div></div>
-        <div class="score-board"><div class="score-label">最佳成绩</div><div class="score-val" id="bestScore">0</div></div>
+        <div class="score-board"><div class="score-label">总战力</div><div class="score-val" id="score">0</div><div id="add" style="display:none;"></div></div>
+        <div class="score-board"><div class="score-label">最佳</div><div class="score-val" id="bestScore">0</div></div>
       </div>
     </div>
   </div>
 
-	<!-- 核心棋盘区 -->
 	<div class="game-wrapper"><div class="game">
 		<div id="tile-container" class="tile-container"></div>
 		<div class="end" id="end">游戏结束<div class="monkey">🙈</div><button class="btn not-recommended__item js-restart-btn" id="try-again">再试一次</button></div>
@@ -380,14 +389,14 @@
   </div>
 </div>
 
-<!-- 苗友成绩单弹窗（严格 1:1 比例） -->
+<!-- 苗友成绩单弹窗（严格 1:1，双成绩展示） -->
 <div id="poster-modal" class="settings-modal">
   <div id="poster-wrapper">
     <div class="poster-card-1to1" id="poster-render-target">
       <div class="poster-top-pill">✨ 苗友成绩单 ✨</div>
       <div class="poster-main-title">苗哥2048</div>
       
-      <!-- 中间放大的角色立绘 -->
+      <!-- 中间立绘 -->
       <div class="poster-avatar-holder">
         <img id="poster-role-img" src="assets/tiles/avatar_1.png" alt="角色立绘">
       </div>
@@ -395,10 +404,17 @@
       <!-- 已解锁状态 -->
       <div class="poster-unlocked-tag" id="poster-role-tag">已解锁：洪文定</div>
 
-      <!-- 历史最高战力展示框 -->
+      <!-- 双战力展示框：本局成绩 | 历史成绩 -->
       <div class="poster-score-board">
-        <div class="poster-score-label">历史最高战力</div>
-        <div class="poster-score-value" id="poster-score-display">0</div>
+        <div class="poster-score-col">
+          <div class="poster-score-label">本局战力</div>
+          <div class="poster-score-value" id="poster-score-current">0</div>
+        </div>
+        <div class="poster-score-divider"></div>
+        <div class="poster-score-col">
+          <div class="poster-score-label">历史成绩</div>
+          <div class="poster-score-value" id="poster-score-best">0</div>
+        </div>
       </div>
 
       <!-- 保持不变的底部两行药丸 -->
@@ -445,7 +461,7 @@ var TILE_INFO = {
   2048: { avatarIndex: 11, name: "苗哥本人" }
 };
 
-// ================= 音频管理（音量已降低至 0.15） =================
+// ================= 音频管理 =================
 var AudioManager = {
   bgmAudio: null,
   isBgmOn: false,
@@ -542,7 +558,7 @@ var AudioManager = {
   }
 };
 
-// ================= 原版引擎核心算法（严格保持原汁原味） =================
+// ================= 核心玩法引擎 =================
 function initGame() {
   game = Array(size * size).fill(null);
   initBestScore();
@@ -848,7 +864,6 @@ function shiftGameDown(gameGrid) {
   return rotateLeft90Deg(rotatedGame);
 }
 
-// 统一行动逻辑：确保只有在盘面产生实际变动时才生成新方块并更新
 function handleAction(direction) {
   var prevGame = [].concat(game);
   var nextState = null;
@@ -861,7 +876,6 @@ function handleAction(direction) {
     default: return;
   }
 
-  // 严格比对新旧状态是否发生移动或合成
   var changed = false;
   for (var i = 0; i < game.length; i++) {
     if (game[i] === null && nextState[i] !== null) { changed = true; break; }
@@ -892,7 +906,7 @@ function handleAction(direction) {
   }
 }
 
-// ================= 键盘与滑动监听（加入防抖与阈值判断） =================
+// 键盘监听
 document.addEventListener("keydown", handleKeypress);
 
 function handleKeypress(evt) {
@@ -905,27 +919,27 @@ function handleKeypress(evt) {
       if (e.preventDefault) e.preventDefault();
     }
     switch (whichKey) {
-      case 37: // Left
-      case 65: // A
+      case 37:
+      case 65:
         handleAction('left');
         break;
-      case 38: // Up
-      case 87: // W
+      case 38:
+      case 87:
         handleAction('up');
         break;
-      case 39: // Right
-      case 68: // D
+      case 39:
+      case 68:
         handleAction('right');
         break;
-      case 40: // Down
-      case 83: // S
+      case 40:
+      case 83:
         handleAction('down');
         break;
     }
   }
 }
 
-// 触摸事件：在 touchend 判定滑动，彻底杜绝连续乱跳
+// 触控监听
 var xDown = null;
 var yDown = null;
 
@@ -955,7 +969,7 @@ document.addEventListener('touchend', function(evt) {
   yDown = null;
 }, false);
 
-// 电脑端鼠标拖动支持
+// 鼠标拖动支持
 var isMouseDown = false;
 var mouseStartX = 0;
 var mouseStartY = 0;
@@ -1058,7 +1072,7 @@ function renderSaveSlots() {
   }
 }
 
-// 页面交互事件
+// 页面按钮与事件交互
 document.addEventListener('DOMContentLoaded', function () {
   AudioManager.init();
 
@@ -1127,13 +1141,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 成绩单弹窗展示（直接更新 DOM，零报错风险）
+  // 成绩单弹窗展示（同步赋本局战力与历史最佳）
   var posterModal = document.getElementById('poster-modal');
   var posterToggle = document.getElementById('poster-toggle');
   var posterClose = document.getElementById('poster-close');
   var posterRoleImg = document.getElementById('poster-role-img');
   var posterRoleTag = document.getElementById('poster-role-tag');
-  var posterScoreDisplay = document.getElementById('poster-score-display');
+  var posterScoreCurrent = document.getElementById('poster-score-current');
+  var posterScoreBest = document.getElementById('poster-score-best');
 
   if (posterToggle) {
     posterToggle.addEventListener('click', function () {
@@ -1142,7 +1157,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       posterRoleImg.src = 'assets/tiles/avatar_' + info.avatarIndex + '.png';
       posterRoleTag.textContent = '已解锁：' + info.name;
-      posterScoreDisplay.textContent = bestScore;
+      posterScoreCurrent.textContent = score;
+      posterScoreBest.textContent = bestScore;
 
       posterModal.style.display = 'flex';
     });
