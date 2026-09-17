@@ -8,9 +8,38 @@
 <link rel="stylesheet" href="css/reset.min.css">
 <link rel="stylesheet" href="css/style.css">
 
+<style>
+  /* 绑定 assets/tiles/avatar_{n}.png 立绘素材 */
+  .tile--2    { background-image: url('assets/tiles/avatar_1.png') !important; }
+  .tile--4    { background-image: url('assets/tiles/avatar_2.png') !important; }
+  .tile--8    { background-image: url('assets/tiles/avatar_3.png') !important; }
+  .tile--16   { background-image: url('assets/tiles/avatar_4.png') !important; }
+  .tile--32   { background-image: url('assets/tiles/avatar_5.png') !important; }
+  .tile--64   { background-image: url('assets/tiles/avatar_6.png') !important; }
+  .tile--128  { background-image: url('assets/tiles/avatar_7.png') !important; }
+  .tile--256  { background-image: url('assets/tiles/avatar_8.png') !important; }
+  .tile--512  { background-image: url('assets/tiles/avatar_9.png') !important; }
+  .tile--1024 { background-image: url('assets/tiles/avatar_10.png') !important; }
+  .tile--2048 { background-image: url('assets/tiles/avatar_11.png') !important; }
+  .tile--4096 { background-image: url('assets/tiles/avatar_12.png') !important; }
+  .tile--8192 { background-image: url('assets/tiles/avatar_13.png') !important; }
+
+  .tile {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+</style>
 </head>
 
 <body>
+<!-- 音频播放器元素 -->
+<audio id="audio-bgm" loop preload="auto">
+  <source src="assets/audio/bgm.mp3" type="audio/mpeg">
+</audio>
+
 <div id="intro-mask">
   <div class="intro-content">
     <div class="intro-title-1">苗哥2048</div>
@@ -23,11 +52,16 @@
 <div id="arcade-container">
 <div class="top-bar">
 	<div class="header-layout"><img src="assets/avatar-logo.png" class="logo-img"><div class="title-group"><h1>苗哥2048</h1><div class="subtitle">演员谢苗粉丝向</div></div></div>
-	<div class="header-layout"><button class="icon-btn" id="bgm-toggle" title="背景音乐">🎵</button><button class="icon-btn" id="settings-toggle" title="设置">⚙️</button><button class="icon-btn" id="poster-toggle" title="成绩单">📸</button><div class="score-board"><div class="score-label">总战力</div><div class="score-val" id="score">0</div></div></div>
+	<div class="header-layout">
+    <button class="icon-btn" id="bgm-toggle" title="背景音乐">🎵</button>
+    <button class="icon-btn" id="settings-toggle" title="设置">⚙️</button>
+    <button class="icon-btn" id="poster-toggle" title="成绩单">📸</button>
+    <div class="score-board"><div class="score-label">总战力</div><div class="score-val" id="score">0</div></div>
+  </div>
 </div>
 <div class="header-info-row"><div id="role-badge">当前阶段：初出茅庐</div><div class="score-board"><div class="score-label">最佳战绩</div><div class="score-val" id="bestScore">0</div></div></div>
 
-	<div class="directions"><p><strong>玩法：</strong>滑动或使用方向键移动苗哥卡片，相同卡片相遇即可合成更高阶角色！</p></div>
+	<div class="directions"><p><strong>玩法：</strong>滑动、按方向键或 WASD 移动苗哥卡片，相同卡片相遇即可合成更高阶角色！</p></div>
 	<div class="game-wrapper"><div class="game">
 		<div id="tile-container" class="tile-container"></div>
 		<div class="end" id="end">游戏结束<div class="monkey">🙈</div><button class="btn not-recommended__item js-restart-btn" id="try-again">再试一次</button></div>
@@ -37,9 +71,635 @@
 		<button class="btn not-recommended__item js-restart-btn" id="restart">重新开始</button>
 	</div>
 </div>
-<div id="settings-modal" class="settings-modal"><div class="settings-box"><div class="settings-title">系统菜单</div><button class="settings-btn btn-green" id="save-game">💾 记录当前进度</button><button class="settings-btn btn-blue" id="load-game">📂 读取存档</button><button class="settings-btn btn-blue" id="modal-restart">🔄 重新开始</button><button class="settings-btn btn-pink" id="modal-close">返回游戏</button><div id="save-hint"></div></div></div>
-<div id="poster-modal" class="settings-modal"><div id="capture-area" class="settings-box"><div class="poster-header-pill">✨ 苗友成绩单 ✨</div><div class="poster-title">苗哥2048</div><div id="poster-avatar-preview" class="poster-avatar"></div><div id="poster-role-text" class="poster-role-tag">已达成：初出茅庐</div><div class="poster-score-box">本局战力 <strong id="poster-score">0</strong><br>最高战绩 <strong id="poster-best">0</strong></div><div class="save-tip">继续合成，解锁更多苗哥角色！</div><button class="settings-btn btn-pink" id="poster-close">返回游戏</button></div></div>
 
-<script src="js/index.js"></script>
+<div id="settings-modal" class="settings-modal"><div class="settings-box"><div class="settings-title">系统菜单</div><button class="settings-btn btn-green" id="save-game">💾 记录当前进度</button><button class="settings-btn btn-blue" id="load-game">📂 读取存档</button><button class="settings-btn btn-blue" id="modal-restart">🔄 重新开始</button><button class="settings-btn btn-pink" id="modal-close">返回游戏</button><div id="save-hint"></div></div></div>
+<div id="poster-modal" class="settings-modal"><div id="capture-area" class="settings-box"><div class="poster-header-pill">✨ 苗友成绩单 ✨</div><div class="poster-title">苗哥2048</div><div id="poster-avatar-preview" class="poster-avatar" style="background-size:cover;background-position:center;"></div><div id="poster-role-text" class="poster-role-tag">已达成：初出茅庐</div><div class="poster-score-box">本局战力 <strong id="poster-score">0</strong><br>最高战绩 <strong id="poster-best">0</strong></div><div class="save-tip">继续合成，解锁更多苗哥角色！</div><button class="settings-btn btn-pink" id="poster-close">返回游戏</button></div></div>
+
+<script>
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// ================= 音频管理系统 =================
+var AudioManager = {
+  bgmAudio: null,
+  isBgmOn: false,
+  audioCtx: null,
+
+  init: function() {
+    this.bgmAudio = document.getElementById('audio-bgm');
+    // 初始化 Web Audio API 生成动态合成音效
+    var AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioCtxClass) {
+      this.audioCtx = new AudioCtxClass();
+    }
+  },
+
+  // 播放合成/升级音效（清脆武打命中音）
+  playMergeSound: function(value) {
+    if (!this.audioCtx) return;
+    if (this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+    try {
+      var osc = this.audioCtx.createOscillator();
+      var gain = this.audioCtx.createGain();
+      osc.type = 'triangle';
+      
+      // 合成阶级越高，音调与打击感越亮
+      var baseFreq = 320 + Math.min(Math.log2(value) * 60, 600);
+      osc.frequency.setValueAtTime(baseFreq, this.audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, this.audioCtx.currentTime + 0.12);
+
+      gain.gain.setValueAtTime(0.3, this.audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.15);
+
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+      osc.start();
+      osc.stop(this.audioCtx.currentTime + 0.15);
+    } catch(e) {}
+  },
+
+  // 播放滑动音效（轻风声）
+  playMoveSound: function() {
+    if (!this.audioCtx) return;
+    if (this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+    try {
+      var osc = this.audioCtx.createOscillator();
+      var gain = this.audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, this.audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(110, this.audioCtx.currentTime + 0.08);
+
+      gain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.08);
+
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+      osc.start();
+      osc.stop(this.audioCtx.currentTime + 0.08);
+    } catch(e) {}
+  },
+
+  toggleBgm: function() {
+    if (!this.bgmAudio) return false;
+    if (this.isBgmOn) {
+      this.bgmAudio.pause();
+      this.isBgmOn = false;
+    } else {
+      var playPromise = this.bgmAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(function() {
+          AudioManager.isBgmOn = true;
+          document.getElementById('bgm-toggle').textContent = '🎵';
+        }).catch(function() {
+          AudioManager.isBgmOn = false;
+          document.getElementById('bgm-toggle').textContent = '🔇';
+        });
+      }
+      this.isBgmOn = true;
+    }
+    return this.isBgmOn;
+  }
+};
+
+var TILE_INFO = {
+  2:    { avatarIndex: 1,  stage: "初出茅庐" },
+  4:    { avatarIndex: 2,  stage: "身手不凡" },
+  8:    { avatarIndex: 3,  stage: "名声鹊起" },
+  16:   { avatarIndex: 4,  stage: "独当一面" },
+  32:   { avatarIndex: 5,  stage: "炉火纯青" },
+  64:   { avatarIndex: 6,  stage: "听风辨位" },
+  128:  { avatarIndex: 7,  stage: "拳风破浪" },
+  256:  { avatarIndex: 8,  stage: "一代宗师" },
+  512:  { avatarIndex: 9,  stage: "气吞万里" },
+  1024: { avatarIndex: 10, stage: "巅峰对决" },
+  2048: { avatarIndex: 11, stage: "武冠群雄" },
+  4096: { avatarIndex: 12, stage: "傲视苍穹" },
+  8192: { avatarIndex: 13, stage: "神乎其技" }
+};
+
+var game = null;
+var bestScore = 0;
+var scoreDiv = document.getElementById('score');
+var bestScoreDiv = document.getElementById('bestScore');
+var roleBadgeDiv = document.getElementById('role-badge');
+var endDiv = document.getElementById('end');
+var size = 4;
+var nextId = 1;
+var score = 0;
+var hasMergedThisTurn = false;
+var lastMaxMergeVal = 2;
+
+function initGame() {
+  game = Array(size * size).fill(null);
+  initBestScore();
+}
+
+function initBestScore() {
+  bestScore = localStorage.getItem('bestScore') || 0;
+  bestScoreDiv.innerHTML = bestScore;
+}
+
+function getMaxTile() {
+  var maxVal = 2;
+  for (var i = 0; i < game.length; i++) {
+    if (game[i] && game[i].value > maxVal) {
+      maxVal = game[i].value;
+    }
+  }
+  return maxVal;
+}
+
+function updateRoleBadge() {
+  var maxVal = getMaxTile();
+  var info = TILE_INFO[maxVal] || { stage: "登峰造极" };
+  if (roleBadgeDiv) {
+    roleBadgeDiv.innerHTML = "当前阶段：" + info.stage;
+  }
+}
+
+function updateDOM(before, after) {
+  var newElements = getNewElementsDOM(before, after);
+  var existingElements = getExistingElementsDOM(before, after);
+  var mergedTiles = getMergedTiles(after);
+  removeElements(mergedTiles);
+  drawGame(newElements, true);
+  drawGame(existingElements);
+  updateRoleBadge();
+}
+
+function removeElements(mergedTiles) {
+  for (var _iterator = mergedTiles, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    var _ref;
+    if (_isArray) {
+      if (_i >= _iterator.length) break;
+      _ref = _iterator[_i++];
+    } else {
+      _i = _iterator.next();
+      if (_i.done) break;
+      _ref = _i.value;
+    }
+    var tile = _ref;
+
+    var _loop = function _loop() {
+      if (_isArray2) {
+        if (_i2 >= _iterator2.length) return 'break';
+        _ref2 = _iterator2[_i2++];
+      } else {
+        _i2 = _iterator2.next();
+        if (_i2.done) return 'break';
+        _ref2 = _i2.value;
+      }
+      var id = _ref2;
+      var currentElm = document.getElementById(id);
+      if (currentElm) {
+        positionTile(tile, currentElm);
+        currentElm.classList.add('tile--shrink');
+        setTimeout(function () {
+          if (currentElm && currentElm.parentNode) {
+            currentElm.remove();
+          }
+        }, 100);
+      }
+    };
+
+    for (var _iterator2 = tile.mergedIds, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+      var _ref2;
+      var _ret = _loop();
+      if (_ret === 'break') break;
+    }
+  }
+}
+
+function getMergedTiles(after) {
+  return after.filter(function (tile) {
+    return tile && tile.mergedIds;
+  });
+}
+
+function getNewElementsDOM(before, after) {
+  var beforeIds = before.filter(function (tile) {
+    return tile;
+  }).map(function (tile) {
+    return tile.id;
+  });
+  return after.filter(function (tile) {
+    return tile && beforeIds.indexOf(tile.id) === -1;
+  });
+}
+
+function getExistingElementsDOM(before, after) {
+  var beforeIds = before.filter(function (tile) {
+    return tile;
+  }).map(function (tile) {
+    return tile.id;
+  });
+  return after.filter(function (tile) {
+    return tile && beforeIds.indexOf(tile.id) !== -1;
+  });
+}
+
+function drawBackground() {
+  var tileContainer = document.getElementById('tile-container');
+  tileContainer.innerHTML = '';
+  for (var i = 0; i < game.length; i++) {
+    var tileDiv = document.createElement('div');
+    var x = i % size;
+    var y = Math.floor(i / size);
+    tileDiv.style.top = y * 100 + 'px';
+    tileDiv.style.left = x * 100 + 'px';
+    tileDiv.classList.add("background");
+    tileContainer.appendChild(tileDiv);
+  }
+}
+
+function positionTile(tile, elm) {
+  var x = tile.index % size;
+  var y = Math.floor(tile.index / size);
+  elm.style.top = y * 100 + 'px';
+  elm.style.left = x * 100 + 'px';
+}
+
+function drawGame(tiles, isNew) {
+  var tileContainer = document.getElementById('tile-container');
+  for (var i = 0; i < tiles.length; i++) {
+    var tile = tiles[i];
+    if (tile) {
+      if (isNew) {
+        (function () {
+          var tileDiv = document.createElement('div');
+          positionTile(tile, tileDiv);
+          tileDiv.classList.add('tile', 'tile--' + tile.value);
+          tileDiv.id = tile.id;
+          setTimeout(function () {
+            tileDiv.classList.add("tile--pop");
+          }, tile.mergedIds ? 1 : 150);
+          tileDiv.innerHTML = '<p>' + tile.value + '</p>';
+          tileContainer.appendChild(tileDiv);
+        })();
+      } else {
+        var currentElement = document.getElementById(tile.id);
+        if (currentElement) {
+          positionTile(tile, currentElement);
+        }
+      }
+    }
+  }
+}
+
+function gameOver() {
+  if (game.filter(function (number) { return number === null; }).length === 0) {
+    var sameNeighbors = game.find(function (tile, i) {
+      var isRightSame = game[i + 1] && (i + 1) % 4 !== 0 ? tile.value === game[i + 1].value : false;
+      var isDownSame = game[i + 4] ? tile.value === game[i + 4].value : false;
+      return isRightSame || isDownSame;
+    });
+    return !sameNeighbors;
+  }
+  return false;
+}
+
+function generateNewNumber() {
+  return Math.random() * 100 <= 90 ? 2 : 4;
+}
+
+function addRandomNumber() {
+  var emptyCells = game.map(function (_, index) { return index; }).filter(function (index) { return game[index] === null; });
+  if (emptyCells.length === 0) return;
+  var newPos = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  var newObj = {
+    id: nextId++,
+    index: newPos,
+    value: generateNewNumber()
+  };
+  game.splice(newPos, 1, newObj);
+}
+
+function getIndexForPoint(x, y) { return y * size + x; }
+
+function reflectGrid(grid) {
+  var reflectedGame = Array(size * size).fill(0);
+  for (var row = 0; row < size; row++) {
+    for (var col = 0; col < size; col++) {
+      reflectedGame[getIndexForPoint(col, row)] = grid[getIndexForPoint(size - col - 1, row)];
+    }
+  }
+  return reflectedGame;
+}
+
+function rotateLeft90Deg(grid) {
+  var rotatedGame = Array(size * size).fill(0);
+  for (var row = 0; row < size; row++) {
+    for (var col = 0; col < size; col++) {
+      rotatedGame[getIndexForPoint(col, row)] = grid[getIndexForPoint(size - 1 - row, col)];
+    }
+  }
+  return rotatedGame;
+}
+
+function rotateRight90Deg(grid) {
+  var rotatedGame = Array(size * size).fill(0);
+  for (var row = 0; row < size; row++) {
+    for (var col = 0; col < size; col++) {
+      rotatedGame[getIndexForPoint(col, row)] = grid[getIndexForPoint(row, size - 1 - col)];
+    }
+  }
+  return rotatedGame;
+}
+
+function shiftGameRight(gameGrid) {
+  return reflectGrid(shiftGameLeft(reflectGrid(gameGrid)));
+}
+
+function shiftGameLeft(gameGrid) {
+  var newGameState = [];
+  var totalAdd = 0;
+  for (var i = 0; i < size; i++) {
+    var firstPos = 4 * i;
+    var currentRow = gameGrid.slice(firstPos, size + 4 * i);
+    var filteredRow = currentRow.filter(function (row) { return row; });
+
+    for (var k = 0; k < filteredRow.length; k++) {
+      delete filteredRow[k].mergedIds;
+    }
+
+    for (var j = 0; j < filteredRow.length - 1; j++) {
+      if (filteredRow[j].value === filteredRow[j + 1].value) {
+        var sum = filteredRow[j].value * 2;
+        filteredRow[j] = {
+          id: nextId++,
+          mergedIds: [filteredRow[j].id, filteredRow[j + 1].id],
+          value: sum
+        };
+        filteredRow.splice(j + 1, 1);
+        score += sum;
+        totalAdd += sum;
+        hasMergedThisTurn = true;
+        if (sum > lastMaxMergeVal) lastMaxMergeVal = sum;
+      }
+    }
+    while (filteredRow.length < size) {
+      filteredRow.push(null);
+    }
+    newGameState = [].concat(newGameState, filteredRow);
+  }
+
+  if (totalAdd > 0) {
+    scoreDiv.innerHTML = score;
+    if (score > bestScore) {
+      bestScore = score;
+      localStorage.setItem('bestScore', bestScore);
+      initBestScore();
+    }
+  }
+  return newGameState;
+}
+
+function shiftGameUp(gameGrid) {
+  return rotateRight90Deg(shiftGameLeft(rotateLeft90Deg(gameGrid)));
+}
+
+function shiftGameDown(gameGrid) {
+  return rotateLeft90Deg(shiftGameLeft(rotateRight90Deg(gameGrid)));
+}
+
+function stepGame(newGrid) {
+  var isChanged = false;
+  for (var i = 0; i < game.length; i++) {
+    if ((game[i] === null && newGrid[i] !== null) ||
+        (game[i] !== null && newGrid[i] === null) ||
+        (game[i] && newGrid[i] && (game[i].id !== newGrid[i].id || game[i].value !== newGrid[i].value))) {
+      isChanged = true;
+      break;
+    }
+  }
+  if (!isChanged) return;
+
+  // 播放对应音效
+  if (hasMergedThisTurn) {
+    AudioManager.playMergeSound(lastMaxMergeVal);
+  } else {
+    AudioManager.playMoveSound();
+  }
+  hasMergedThisTurn = false;
+  lastMaxMergeVal = 2;
+
+  var prevGame = [].concat(game);
+  game = newGrid.map(function (tile, index) {
+    return tile ? _extends({}, tile, { index: index }) : null;
+  });
+  addRandomNumber();
+  updateDOM(prevGame, game);
+
+  if (gameOver()) {
+    setTimeout(function () {
+      endDiv.classList.add('active');
+    }, 800);
+  }
+}
+
+// 触摸与手机滑动
+var xDown = null;
+var yDown = null;
+document.addEventListener('touchstart', function (evt) {
+  xDown = evt.touches[0].clientX;
+  yDown = evt.touches[0].clientY;
+}, false);
+
+document.addEventListener('touchend', function (evt) {
+  if (!xDown || !yDown) return;
+  var xUp = evt.changedTouches[0].clientX;
+  var yUp = evt.changedTouches[0].clientY;
+  handleSwipe(xDown, yDown, xUp, yUp);
+  xDown = null;
+  yDown = null;
+}, false);
+
+// 电脑端鼠标拖拽
+var isMouseDown = false;
+var mouseStartX = 0;
+var mouseStartY = 0;
+document.addEventListener('mousedown', function (evt) {
+  isMouseDown = true;
+  mouseStartX = evt.clientX;
+  mouseStartY = evt.clientY;
+});
+
+document.addEventListener('mouseup', function (evt) {
+  if (!isMouseDown) return;
+  isMouseDown = false;
+  handleSwipe(mouseStartX, mouseStartY, evt.clientX, evt.clientY);
+});
+
+function handleSwipe(startX, startY, endX, endY) {
+  var xDiff = startX - endX;
+  var yDiff = startY - endY;
+  if (Math.abs(xDiff) > 20 || Math.abs(yDiff) > 20) {
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+      if (xDiff > 0) stepGame(shiftGameLeft(game));
+      else stepGame(shiftGameRight(game));
+    } else {
+      if (yDiff > 0) stepGame(shiftGameUp(game));
+      else stepGame(shiftGameDown(game));
+    }
+  }
+}
+
+// 键盘按键事件
+window.addEventListener("keydown", function (evt) {
+  var e = evt || window.event;
+  var code = e.keyCode || e.which;
+
+  if ([37, 38, 39, 40, 65, 87, 68, 83].indexOf(code) > -1) {
+    e.preventDefault();
+  }
+
+  switch (code) {
+    case 37:
+    case 65:
+      stepGame(shiftGameLeft(game)); 
+      break;
+    case 38:
+    case 87:
+      stepGame(shiftGameUp(game)); 
+      break;
+    case 39:
+    case 68:
+      stepGame(shiftGameRight(game)); 
+      break;
+    case 40:
+    case 83:
+      stepGame(shiftGameDown(game)); 
+      break;
+  }
+}, true);
+
+function newGameStart() {
+  document.getElementById('tile-container').innerHTML = '';
+  endDiv.classList.remove('active');
+  score = 0;
+  scoreDiv.innerHTML = score;
+  initGame();
+  drawBackground();
+  var previousGame = [].concat(game);
+  addRandomNumber();
+  addRandomNumber();
+  updateDOM(previousGame, game);
+}
+
+// 页面交互事件
+document.addEventListener('DOMContentLoaded', function () {
+  AudioManager.init();
+
+  var enterBtn = document.getElementById('enter-game-btn');
+  var introMask = document.getElementById('intro-mask');
+  if (enterBtn && introMask) {
+    enterBtn.addEventListener('click', function () {
+      introMask.style.display = 'none';
+      window.focus();
+      // 用户主动交互后启动 BGM
+      AudioManager.toggleBgm();
+    });
+  }
+
+  // BGM 按钮点击开关
+  var bgmBtn = document.getElementById('bgm-toggle');
+  if (bgmBtn) {
+    bgmBtn.addEventListener('click', function() {
+      var playing = AudioManager.toggleBgm();
+      bgmBtn.textContent = playing ? '🎵' : '🔇';
+    });
+  }
+
+  var restartBtns = document.querySelectorAll(".js-restart-btn");
+  for (var i = 0; i < restartBtns.length; i++) {
+    restartBtns[i].addEventListener("click", newGameStart);
+  }
+
+  var settingsModal = document.getElementById('settings-modal');
+  var settingsToggle = document.getElementById('settings-toggle');
+  var modalClose = document.getElementById('modal-close');
+  var saveBtn = document.getElementById('save-game');
+  var loadBtn = document.getElementById('load-game');
+  var modalRestart = document.getElementById('modal-restart');
+  var saveHint = document.getElementById('save-hint');
+
+  if (settingsToggle) {
+    settingsToggle.addEventListener('click', function () { settingsModal.style.display = 'block'; });
+  }
+  if (modalClose) {
+    modalClose.addEventListener('click', function () {
+      settingsModal.style.display = 'none';
+      if (saveHint) saveHint.innerHTML = '';
+      window.focus();
+    });
+  }
+  if (modalRestart) {
+    modalRestart.addEventListener('click', function () {
+      settingsModal.style.display = 'none';
+      newGameStart();
+      window.focus();
+    });
+  }
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function () {
+      localStorage.setItem('miao2048_save', JSON.stringify({ game: game, score: score, nextId: nextId }));
+      if (saveHint) saveHint.innerHTML = '<span style="color:#4caf50;">✅ 进度已保存！</span>';
+    });
+  }
+  if (loadBtn) {
+    loadBtn.addEventListener('click', function () {
+      var saved = localStorage.getItem('miao2048_save');
+      if (saved) {
+        var parsed = JSON.parse(saved);
+        game = parsed.game;
+        score = parsed.score;
+        nextId = parsed.nextId;
+        scoreDiv.innerHTML = score;
+        document.getElementById('tile-container').innerHTML = '';
+        drawBackground();
+        drawGame(game.filter(function (t) { return t; }), true);
+        updateRoleBadge();
+        settingsModal.style.display = 'none';
+        window.focus();
+      } else {
+        if (saveHint) saveHint.innerHTML = '<span style="color:#f44336;">⚠️ 未找到存档！</span>';
+      }
+    });
+  }
+
+  var posterModal = document.getElementById('poster-modal');
+  var posterToggle = document.getElementById('poster-toggle');
+  var posterClose = document.getElementById('poster-close');
+  var posterAvatar = document.getElementById('poster-avatar-preview');
+  var posterRoleText = document.getElementById('poster-role-text');
+  var posterScore = document.getElementById('poster-score');
+  var posterBest = document.getElementById('poster-best');
+
+  if (posterToggle) {
+    posterToggle.addEventListener('click', function () {
+      var maxVal = getMaxTile();
+      var info = TILE_INFO[maxVal] || { avatarIndex: 1, stage: "武冠群雄" };
+      if (posterRoleText) posterRoleText.innerHTML = "已达成：" + info.stage;
+      if (posterAvatar) posterAvatar.style.backgroundImage = 'url("assets/tiles/avatar_' + info.avatarIndex + '.png")';
+      if (posterScore) posterScore.innerHTML = score;
+      if (posterBest) posterBest.innerHTML = bestScore;
+      posterModal.style.display = 'block';
+    });
+  }
+  if (posterClose) {
+    posterClose.addEventListener('click', function () { 
+      posterModal.style.display = 'none'; 
+      window.focus();
+    });
+  }
+
+  newGameStart();
+});
+</script>
 </body>
 </html>
