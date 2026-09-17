@@ -29,11 +29,271 @@
     user-select: none;
     -webkit-user-select: none;
   }
+
+  /* 弹窗全屏居中遮罩 */
+  .settings-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+
+  /* 系统菜单卡片样式 */
+  .custom-settings-card {
+    background: #fff9ed;
+    border: 3px solid #fde68a;
+    border-radius: 24px;
+    width: 320px;
+    max-width: 86vw;
+    padding: 24px 20px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    text-align: center;
+    position: relative;
+  }
+
+  .settings-card-title {
+    color: #b45309;
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+  }
+
+  .menu-pill-btn {
+    width: 100%;
+    border: none;
+    border-radius: 22px;
+    padding: 11px 0;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.1s ease;
+  }
+  .menu-pill-btn:active { transform: translateY(2px); }
+
+  .btn-green-pill { background: #22c55e; color: #fff; box-shadow: 0 4px #15803d; }
+  .btn-green-pill:active { box-shadow: 0 2px #15803d; }
+
+  .btn-blue-pill { background: #3b82f6; color: #fff; box-shadow: 0 4px #1d4ed8; margin-top: 14px; }
+  .btn-blue-pill:active { box-shadow: 0 2px #1d4ed8; }
+
+  .btn-pink-pill { background: #fca5a5; color: #fff; box-shadow: 0 4px #f43f5e; margin-top: 12px; }
+  .btn-pink-pill:active { box-shadow: 0 2px #f43f5e; }
+
+  .save-info-group { text-align: left; margin-top: 18px; margin-bottom: 8px; }
+  .save-header-txt { color: #92400e; font-size: 14px; font-weight: 900; }
+  .save-sub-txt { color: #b45309; font-size: 10px; transform: scale(0.92); transform-origin: left center; margin-top: 2px; }
+
+  .save-slot-box {
+    background: #ffffff;
+    border: 1.5px dashed #f59e0b;
+    border-radius: 12px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    box-sizing: border-box;
+  }
+  .save-empty-text { color: #57534e; font-size: 16px; font-weight: bold; letter-spacing: 0.5px; }
+
+  .save-record-item { width: 100%; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .save-record-details { text-align: left; }
+  .save-record-time { font-size: 11px; color: #78716c; }
+  .save-record-score { font-size: 13px; font-weight: bold; color: #b45309; margin-top: 2px; }
+  .save-delete-btn {
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #ef4444;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .save-delete-btn:active { background: #fecaca; }
+
+  /* ================= 纯 CSS 严格 1:1 成绩单海报卡 ================= */
+  #poster-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-height: 98vh;
+  }
+
+  .poster-card-1to1 {
+    width: 320px;
+    height: 320px;
+    max-width: 86vw;
+    max-height: 86vw;
+    background: #fff9ed;
+    border: 2.5px solid #fde68a;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    box-sizing: border-box;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .poster-top-pill {
+    background: #ffffff;
+    border: 1.5px solid #fcd34d;
+    border-radius: 14px;
+    padding: 2px 18px;
+    color: #78350f;
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .poster-main-title {
+    color: #b45309;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 20px;
+    margin-top: -2px;
+  }
+
+  /* 居中立绘容器 */
+  .poster-avatar-holder {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -2px 0;
+  }
+  .poster-avatar-holder img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  }
+
+  .poster-unlocked-tag {
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    border-radius: 12px;
+    padding: 2px 16px;
+    color: #e11d48;
+    font-weight: bold;
+    font-size: 11px;
+  }
+
+  /* 战力展示框 */
+  .poster-score-board {
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    width: 90%;
+    padding: 4px 0;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .poster-score-label {
+    color: #4b5563;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 14px;
+  }
+  .poster-score-value {
+    color: #c2410c;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 28px;
+    font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
+  }
+
+  /* 底部双层药丸样式 */
+  .poster-bottom-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .poster-brand-pill {
+    background: #ffffff;
+    border: 1.5px solid #fed7aa;
+    border-radius: 14px;
+    padding: 2px 12px 2px 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #78350f;
+    font-weight: bold;
+    font-size: 11px;
+  }
+  .poster-brand-avatar {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid #f59e0b;
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .poster-credit-pill {
+    background: #fffdf7;
+    border: 1px dashed #fcd34d;
+    border-radius: 12px;
+    padding: 2px 12px;
+    color: #92400e;
+    font-weight: bold;
+    font-size: 10px;
+  }
+
+  .save-tip-pill {
+    margin-top: 12px;
+    background: #fff4e5;
+    border: 1px dashed #f59e0b;
+    color: #b45309;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 6px 18px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .poster-close-btn {
+    margin-top: 10px;
+    width: 140px;
+    background: #fda4af;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 0;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 4px #f43f5e;
+    cursor: pointer;
+  }
+  .poster-close-btn:active { transform: translateY(2px); box-shadow: 0 2px #f43f5e; }
 </style>
 </head>
 
 <body>
-<!-- BGM 直接存放在 assets/ 目录下 -->
 <audio id="audio-bgm" loop preload="auto">
   <source src="assets/bgm.mp3" type="audio/mpeg">
 </audio>
@@ -41,7 +301,7 @@
 <div id="intro-mask">
   <div class="intro-content">
     <div class="intro-title-1">苗哥2048</div>
-    <div class="intro-title-2"><img class="intro-avatar" style="width:28px;height:28px;max-width:28px;max-height:28px;object-fit:contain;border-radius:50%;" src="assets/avatar-logo.png" alt="谢苗">演员谢苗超话</div>
+    <div class="intro-title-2"><img id="global-avatar-logo" class="intro-avatar" style="width:28px;height:28px;max-width:28px;max-height:28px;object-fit:contain;border-radius:50%;" src="assets/avatar-logo.png" alt="谢苗">演员谢苗超话</div>
     <div class="intro-title-3">制作：林科森 | 制图：老周</div>
     <button class="intro-enter-btn" id="enter-game-btn">点击进入</button>
   </div>
@@ -73,15 +333,68 @@
 	</div>
 </div>
 
-<div id="settings-modal" class="settings-modal"><div class="settings-box"><div class="settings-title">系统菜单</div><button class="settings-btn btn-green" id="save-game">💾 记录当前进度</button><button class="settings-btn btn-blue" id="load-game">📂 读取存档</button><button class="settings-btn btn-blue" id="modal-restart">🔄 重新开始</button><button class="settings-btn btn-pink" id="modal-close">返回游戏</button><div id="save-hint"></div></div></div>
-<div id="poster-modal" class="settings-modal"><div id="capture-area" class="settings-box"><div class="poster-header-pill">✨ 苗友成绩单 ✨</div><div class="poster-title">苗哥2048</div><div id="poster-avatar-preview" class="poster-avatar" style="background-size:cover;background-position:center;"></div><div id="poster-role-text" class="poster-role-tag">已达成：洪文定</div><div class="poster-score-box">本局战力 <strong id="poster-score">0</strong><br>最高战绩 <strong id="poster-best">0</strong></div><div class="save-tip">继续合成，解锁更多苗哥角色！</div><button class="settings-btn btn-pink" id="poster-close">返回游戏</button></div></div>
+<!-- 系统菜单弹窗 -->
+<div id="settings-modal" class="settings-modal">
+  <div class="custom-settings-card">
+    <div class="settings-card-title">系统菜单</div>
+    <button class="menu-pill-btn btn-green-pill" id="save-game">💾 记录当前进度</button>
+
+    <div class="save-info-group">
+      <div class="save-header-txt">本地存档：</div>
+      <div class="save-sub-txt">※ 点击读取，点击存档读取，点击删除按钮删除</div>
+    </div>
+
+    <div class="save-slot-box" id="save-slot-box">
+      <div class="save-empty-text">暂无本地存档</div>
+    </div>
+
+    <button class="menu-pill-btn btn-blue-pill" id="modal-restart">🔄 重新开始</button>
+    <button class="menu-pill-btn btn-pink-pill" id="modal-close">返回游戏</button>
+  </div>
+</div>
+
+<!-- 苗友成绩单弹窗（严格 1:1，原生可靠渲染） -->
+<div id="poster-modal" class="settings-modal">
+  <div id="poster-wrapper">
+    <div class="poster-card-1to1" id="poster-render-target">
+      <div class="poster-top-pill">✨ 苗友成绩单 ✨</div>
+      <div class="poster-main-title">苗哥2048</div>
+      
+      <!-- 中间角色立绘 -->
+      <div class="poster-avatar-holder">
+        <img id="poster-role-img" src="assets/tiles/avatar_1.png" alt="角色立绘">
+      </div>
+
+      <!-- 已解锁状态 -->
+      <div class="poster-unlocked-tag" id="poster-role-tag">已解锁：洪文定</div>
+
+      <!-- 历史最高战力框 -->
+      <div class="poster-score-board">
+        <div class="poster-score-label">历史最高战力</div>
+        <div class="poster-score-value" id="poster-score-display">0</div>
+      </div>
+
+      <!-- 底部两层胶囊药丸 -->
+      <div class="poster-bottom-group">
+        <div class="poster-brand-pill">
+          <img class="poster-brand-avatar" src="assets/avatar-logo.png" alt="头像">
+          <span>演员谢苗超话</span>
+        </div>
+        <div class="poster-credit-pill">制作：林科森 | 制图：老周</div>
+      </div>
+    </div>
+
+    <div class="save-tip-pill">截图或长按卡片即可分享</div>
+    <button class="poster-close-btn" id="poster-close">返回游戏</button>
+  </div>
+</div>
 
 <script>
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-// ================= 音频管理 =================
+// ================= 音频管理（音量已降低至 0.15） =================
 var AudioManager = {
   bgmAudio: null,
   isBgmOn: false,
@@ -89,6 +402,9 @@ var AudioManager = {
 
   init: function() {
     this.bgmAudio = document.getElementById('audio-bgm');
+    if (this.bgmAudio) {
+      this.bgmAudio.volume = 0.15;
+    }
     var AudioCtxClass = window.AudioContext || window.webkitAudioContext;
     if (AudioCtxClass) {
       this.audioCtx = new AudioCtxClass();
@@ -97,9 +413,7 @@ var AudioManager = {
 
   playMergeSound: function(value) {
     if (!this.audioCtx) return;
-    if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
-    }
+    if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
     try {
       var osc = this.audioCtx.createOscillator();
       var gain = this.audioCtx.createGain();
@@ -108,7 +422,7 @@ var AudioManager = {
       osc.frequency.setValueAtTime(baseFreq, this.audioCtx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, this.audioCtx.currentTime + 0.12);
 
-      gain.gain.setValueAtTime(0.3, this.audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.18, this.audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.15);
 
       osc.connect(gain);
@@ -120,9 +434,7 @@ var AudioManager = {
 
   playMoveSound: function() {
     if (!this.audioCtx) return;
-    if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
-    }
+    if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
     try {
       var osc = this.audioCtx.createOscillator();
       var gain = this.audioCtx.createGain();
@@ -130,7 +442,7 @@ var AudioManager = {
       osc.frequency.setValueAtTime(220, this.audioCtx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(110, this.audioCtx.currentTime + 0.08);
 
-      gain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.04, this.audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.08);
 
       osc.connect(gain);
@@ -152,7 +464,7 @@ var AudioManager = {
         self.isBgmOn = true;
         var btn = document.getElementById('bgm-toggle');
         if (btn) btn.textContent = '🎵';
-      }).catch(function(err) {
+      }).catch(function() {
         self.isBgmOn = false;
         var btn = document.getElementById('bgm-toggle');
         if (btn) btn.textContent = '🔇';
@@ -179,7 +491,7 @@ var AudioManager = {
   }
 };
 
-// 角色阶级映射字典
+// 11 阶角色配置
 var TILE_INFO = {
   2:    { avatarIndex: 1,  name: "洪文定" },
   4:    { avatarIndex: 2,  name: "海远" },
@@ -228,7 +540,7 @@ function getMaxTile() {
 
 function updateRoleBadge() {
   var maxVal = getMaxTile();
-  var info = TILE_INFO[maxVal] || { name: "苗哥本人" };
+  var info = TILE_INFO[maxVal] || { name: "洪文定" };
   if (roleBadgeDiv) {
     roleBadgeDiv.innerHTML = "当前阶段：" + info.name;
   }
@@ -294,25 +606,13 @@ function getMergedTiles(after) {
 }
 
 function getNewElementsDOM(before, after) {
-  var beforeIds = before.filter(function (tile) {
-    return tile;
-  }).map(function (tile) {
-    return tile.id;
-  });
-  return after.filter(function (tile) {
-    return tile && beforeIds.indexOf(tile.id) === -1;
-  });
+  var beforeIds = before.filter(function (tile) { return tile; }).map(function (tile) { return tile.id; });
+  return after.filter(function (tile) { return tile && beforeIds.indexOf(tile.id) === -1; });
 }
 
 function getExistingElementsDOM(before, after) {
-  var beforeIds = before.filter(function (tile) {
-    return tile;
-  }).map(function (tile) {
-    return tile.id;
-  });
-  return after.filter(function (tile) {
-    return tile && beforeIds.indexOf(tile.id) !== -1;
-  });
+  var beforeIds = before.filter(function (tile) { return tile; }).map(function (tile) { return tile.id; });
+  return after.filter(function (tile) { return tile && beforeIds.indexOf(tile.id) !== -1; });
 }
 
 function drawBackground() {
@@ -530,7 +830,7 @@ document.addEventListener('touchend', function (evt) {
   yDown = null;
 }, false);
 
-// 电脑端鼠标拖拽
+// 电脑端鼠标拖动
 var isMouseDown = false;
 var mouseStartX = 0;
 var mouseStartY = 0;
@@ -560,7 +860,7 @@ function handleSwipe(startX, startY, endX, endY) {
   }
 }
 
-// 键盘按键事件
+// 键盘按键（方向键 + WASD）
 window.addEventListener("keydown", function (evt) {
   var e = evt || window.event;
   var code = e.keyCode || e.which;
@@ -602,6 +902,62 @@ function newGameStart() {
   updateDOM(previousGame, game);
 }
 
+// ================= 存档管理 =================
+function renderSaveSlots() {
+  var saveBox = document.getElementById('save-slot-box');
+  if (!saveBox) return;
+  var savedData = localStorage.getItem('miao2048_save');
+
+  if (!savedData) {
+    saveBox.innerHTML = '<div class="save-empty-text">暂无本地存档</div>';
+    return;
+  }
+
+  try {
+    var parsed = JSON.parse(savedData);
+    var maxVal = 2;
+    if (parsed.game && Array.isArray(parsed.game)) {
+      parsed.game.forEach(function(tile) {
+        if (tile && tile.value > maxVal) maxVal = tile.value;
+      });
+    }
+    var roleInfo = TILE_INFO[maxVal] || { name: "洪文定" };
+    var timeStr = parsed.time || "近期存档";
+
+    saveBox.innerHTML = 
+      '<div class="save-record-item" id="trigger-load-game" title="点击读取该存档">' +
+        '<div class="save-record-details">' +
+          '<div class="save-record-time">📅 ' + timeStr + '</div>' +
+          '<div class="save-record-score">当前：' + roleInfo.name + ' (战力 ' + (parsed.score || 0) + ')</div>' +
+        '</div>' +
+        '<button class="save-delete-btn" id="trigger-del-game" title="删除存档">❌ 删除</button>' +
+      '</div>';
+
+    document.getElementById('trigger-load-game').addEventListener('click', function(e) {
+      if (e.target.id === 'trigger-del-game') return;
+      game = parsed.game;
+      score = parsed.score;
+      nextId = parsed.nextId;
+      scoreDiv.innerHTML = score;
+      document.getElementById('tile-container').innerHTML = '';
+      drawBackground();
+      drawGame(game.filter(function (t) { return t; }), true);
+      updateRoleBadge();
+      document.getElementById('settings-modal').style.display = 'none';
+      window.focus();
+    });
+
+    document.getElementById('trigger-del-game').addEventListener('click', function(e) {
+      e.stopPropagation();
+      localStorage.removeItem('miao2048_save');
+      renderSaveSlots();
+    });
+
+  } catch(e) {
+    saveBox.innerHTML = '<div class="save-empty-text">暂无本地存档</div>';
+  }
+}
+
 // 页面交互事件
 document.addEventListener('DOMContentLoaded', function () {
   AudioManager.init();
@@ -612,12 +968,10 @@ document.addEventListener('DOMContentLoaded', function () {
     enterBtn.addEventListener('click', function () {
       introMask.style.display = 'none';
       window.focus();
-      // 用户主动交互时立即播放 BGM
       AudioManager.playBgm();
     });
   }
 
-  // BGM 按钮点击开关
   var bgmBtn = document.getElementById('bgm-toggle');
   if (bgmBtn) {
     bgmBtn.addEventListener('click', function() {
@@ -634,17 +988,17 @@ document.addEventListener('DOMContentLoaded', function () {
   var settingsToggle = document.getElementById('settings-toggle');
   var modalClose = document.getElementById('modal-close');
   var saveBtn = document.getElementById('save-game');
-  var loadBtn = document.getElementById('load-game');
   var modalRestart = document.getElementById('modal-restart');
-  var saveHint = document.getElementById('save-hint');
 
   if (settingsToggle) {
-    settingsToggle.addEventListener('click', function () { settingsModal.style.display = 'block'; });
+    settingsToggle.addEventListener('click', function () { 
+      renderSaveSlots();
+      settingsModal.style.display = 'flex';
+    });
   }
   if (modalClose) {
     modalClose.addEventListener('click', function () {
       settingsModal.style.display = 'none';
-      if (saveHint) saveHint.innerHTML = '';
       window.focus();
     });
   }
@@ -657,48 +1011,41 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   if (saveBtn) {
     saveBtn.addEventListener('click', function () {
-      localStorage.setItem('miao2048_save', JSON.stringify({ game: game, score: score, nextId: nextId }));
-      if (saveHint) saveHint.innerHTML = '<span style="color:#4caf50;">✅ 进度已保存！</span>';
-    });
-  }
-  if (loadBtn) {
-    loadBtn.addEventListener('click', function () {
-      var saved = localStorage.getItem('miao2048_save');
-      if (saved) {
-        var parsed = JSON.parse(saved);
-        game = parsed.game;
-        score = parsed.score;
-        nextId = parsed.nextId;
-        scoreDiv.innerHTML = score;
-        document.getElementById('tile-container').innerHTML = '';
-        drawBackground();
-        drawGame(game.filter(function (t) { return t; }), true);
-        updateRoleBadge();
-        settingsModal.style.display = 'none';
-        window.focus();
-      } else {
-        if (saveHint) saveHint.innerHTML = '<span style="color:#f44336;">⚠️ 未找到存档！</span>';
-      }
+      var now = new Date();
+      var timeStr = (now.getMonth() + 1) + '月' + now.getDate() + '日 ' + 
+                    (now.getHours() < 10 ? '0' : '') + now.getHours() + ':' + 
+                    (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+
+      var saveData = {
+        game: game,
+        score: score,
+        nextId: nextId,
+        time: timeStr
+      };
+      localStorage.setItem('miao2048_save', JSON.stringify(saveData));
+      renderSaveSlots();
     });
   }
 
+  // 成绩单弹窗展示（直接更新 DOM，零报错风险）
   var posterModal = document.getElementById('poster-modal');
   var posterToggle = document.getElementById('poster-toggle');
   var posterClose = document.getElementById('poster-close');
-  var posterAvatar = document.getElementById('poster-avatar-preview');
-  var posterRoleText = document.getElementById('poster-role-text');
-  var posterScore = document.getElementById('poster-score');
-  var posterBest = document.getElementById('poster-best');
+  var posterRoleImg = document.getElementById('poster-role-img');
+  var posterRoleTag = document.getElementById('poster-role-tag');
+  var posterScoreDisplay = document.getElementById('poster-score-display');
 
   if (posterToggle) {
     posterToggle.addEventListener('click', function () {
       var maxVal = getMaxTile();
       var info = TILE_INFO[maxVal] || { avatarIndex: 1, name: "洪文定" };
-      if (posterRoleText) posterRoleText.innerHTML = "已达成：" + info.name;
-      if (posterAvatar) posterAvatar.style.backgroundImage = 'url("assets/tiles/avatar_' + info.avatarIndex + '.png")';
-      if (posterScore) posterScore.innerHTML = score;
-      if (posterBest) posterBest.innerHTML = bestScore;
-      posterModal.style.display = 'block';
+
+      // 实时换图与赋分
+      posterRoleImg.src = 'assets/tiles/avatar_' + info.avatarIndex + '.png';
+      posterRoleTag.textContent = '已解锁：' + info.name;
+      posterScoreDisplay.textContent = bestScore;
+
+      posterModal.style.display = 'flex';
     });
   }
   if (posterClose) {
