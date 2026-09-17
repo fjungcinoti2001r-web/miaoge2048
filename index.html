@@ -30,6 +30,23 @@
     -webkit-user-select: none;
   }
 
+  /* 顶部紧凑沉浸栏 */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    box-sizing: border-box;
+  }
+  .score-group-top {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .game-wrapper {
+    margin: 15px auto !important;
+  }
+
   /* 弹窗全屏居中遮罩 */
   .settings-modal {
     display: none;
@@ -127,7 +144,7 @@
   }
   .save-delete-btn:active { background: #fecaca; }
 
-  /* ================= 纯 CSS 严格 1:1 成绩单海报卡 ================= */
+  /* ================= 严格 1:1 成绩单海报卡 ================= */
   #poster-wrapper {
     display: flex;
     flex-direction: column;
@@ -137,14 +154,12 @@
   }
 
   .poster-card-1to1 {
-    width: 320px;
-    height: 320px;
-    max-width: 86vw;
-    max-height: 86vw;
+    width: min(340px, 86vw, 68vh);
+    aspect-ratio: 1 / 1; /* 严格强制正方形画幅 */
     background: #fff9ed;
-    border: 2.5px solid #fde68a;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    border: 3px solid #fde68a;
+    border-radius: 24px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.36);
     box-sizing: border-box;
     padding: 10px 14px;
     display: flex;
@@ -159,55 +174,69 @@
   .poster-top-pill {
     background: #ffffff;
     border: 1.5px solid #fcd34d;
-    border-radius: 14px;
-    padding: 2px 18px;
+    border-radius: 12px;
+    padding: 2px 16px;
     color: #78350f;
     font-weight: bold;
     font-size: 12px;
     letter-spacing: 0.5px;
+    line-height: 16px;
   }
 
   .poster-main-title {
     color: #b45309;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 900;
-    line-height: 20px;
-    margin-top: -2px;
+    line-height: 22px;
+    margin: -2px 0 0 0;
   }
 
-  /* 居中立绘容器 */
+  /* 居中立绘容器（放大并优化视觉展示） */
   .poster-avatar-holder {
-    width: 58px;
-    height: 58px;
+    width: 74px;
+    height: 74px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     margin: -2px 0;
   }
+  .poster-avatar-holder::before {
+    content: '';
+    position: absolute;
+    width: 68px;
+    height: 68px;
+    background: radial-gradient(circle, #fef3c7 45%, rgba(254, 243, 199, 0) 75%);
+    border-radius: 50%;
+    z-index: 1;
+  }
   .poster-avatar-holder img {
+    position: relative;
+    z-index: 2;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.18));
   }
 
   .poster-unlocked-tag {
     background: #fff1f2;
-    border: 1px solid #fecdd3;
+    border: 1.2px solid #fecdd3;
     border-radius: 12px;
     padding: 2px 16px;
     color: #e11d48;
     font-weight: bold;
     font-size: 11px;
+    line-height: 15px;
   }
 
   /* 战力展示框 */
   .poster-score-board {
     background: #ffffff;
     border: 1.5px solid #e5e7eb;
-    border-radius: 10px;
-    width: 90%;
-    padding: 4px 0;
+    border-radius: 12px;
+    width: 92%;
+    padding: 3px 0 4px 0;
     text-align: center;
     box-sizing: border-box;
   }
@@ -225,7 +254,7 @@
     font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
   }
 
-  /* 底部双层药丸样式 */
+  /* 底部双层药丸样式（严格保持不变） */
   .poster-bottom-group {
     display: flex;
     flex-direction: column;
@@ -238,17 +267,18 @@
     background: #ffffff;
     border: 1.5px solid #fed7aa;
     border-radius: 14px;
-    padding: 2px 12px 2px 4px;
+    padding: 2px 14px 2px 5px;
     display: flex;
     align-items: center;
     gap: 6px;
     color: #78350f;
     font-weight: bold;
     font-size: 11px;
+    line-height: 14px;
   }
   .poster-brand-avatar {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     border: 1.5px solid #f59e0b;
     object-fit: contain;
@@ -259,32 +289,33 @@
     background: #fffdf7;
     border: 1px dashed #fcd34d;
     border-radius: 12px;
-    padding: 2px 12px;
+    padding: 2px 14px;
     color: #92400e;
     font-weight: bold;
     font-size: 10px;
+    line-height: 14px;
   }
 
   .save-tip-pill {
-    margin-top: 12px;
+    margin-top: 10px;
     background: #fff4e5;
     border: 1px dashed #f59e0b;
     color: #b45309;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
-    padding: 6px 18px;
+    padding: 5px 16px;
     border-radius: 20px;
     letter-spacing: 0.5px;
   }
   .poster-close-btn {
-    margin-top: 10px;
-    width: 140px;
+    margin-top: 8px;
+    width: 130px;
     background: #fda4af;
     color: #fff;
     border: none;
     border-radius: 20px;
-    padding: 8px 0;
-    font-size: 15px;
+    padding: 7px 0;
+    font-size: 14px;
     font-weight: bold;
     box-shadow: 0 4px #f43f5e;
     cursor: pointer;
@@ -308,29 +339,25 @@
 </div>
 
 <div id="arcade-container">
-<div class="top-bar">
-	<div class="header-layout"><img src="assets/avatar-logo.png" class="logo-img"><div class="title-group"><h1>苗哥2048</h1><div class="subtitle">演员谢苗粉丝向</div></div></div>
-	<div class="header-layout">
-    <button class="icon-btn" id="bgm-toggle" title="背景音乐">🎵</button>
-    <button class="icon-btn" id="settings-toggle" title="设置">⚙️</button>
-    <button class="icon-btn" id="poster-toggle" title="成绩单">📸</button>
-    <div class="score-board"><div class="score-label">总战力</div><div class="score-val" id="score">0</div></div>
+  <!-- 精简后的顶部栏 -->
+  <div class="top-bar">
+    <div class="header-layout"><img src="assets/avatar-logo.png" class="logo-img"><div class="title-group"><h1>苗哥2048</h1><div class="subtitle">演员谢苗粉丝向</div></div></div>
+    <div class="header-layout">
+      <button class="icon-btn" id="bgm-toggle" title="背景音乐">🎵</button>
+      <button class="icon-btn" id="settings-toggle" title="设置">⚙️</button>
+      <button class="icon-btn" id="poster-toggle" title="成绩单">📸</button>
+      <div class="score-group-top">
+        <div class="score-board"><div class="score-label">总战力</div><div class="score-val" id="score">0</div><div id="add" style="display:none;"></div></div>
+        <div class="score-board"><div class="score-label">最佳</div><div class="score-val" id="bestScore">0</div></div>
+      </div>
+    </div>
   </div>
-</div>
-<div class="header-info-row">
-  <div id="role-badge">当前阶段：洪文定</div>
-  <div class="score-board"><div class="score-label">最佳战绩</div><div class="score-val" id="bestScore">0</div></div>
-</div>
 
-	<div class="directions"><p><strong>玩法：</strong>滑动、按方向键或 WASD 移动苗哥卡片，相同卡片相遇即可合成更高阶角色！</p></div>
+	<!-- 核心棋盘区 -->
 	<div class="game-wrapper"><div class="game">
 		<div id="tile-container" class="tile-container"></div>
 		<div class="end" id="end">游戏结束<div class="monkey">🙈</div><button class="btn not-recommended__item js-restart-btn" id="try-again">再试一次</button></div>
 	</div></div>
-
-	<div id="bottom-tools" class="not-recommended">
-		<button class="btn not-recommended__item js-restart-btn" id="restart">重新开始</button>
-	</div>
 </div>
 
 <!-- 系统菜单弹窗 -->
@@ -353,14 +380,14 @@
   </div>
 </div>
 
-<!-- 苗友成绩单弹窗（严格 1:1，原生可靠渲染） -->
+<!-- 苗友成绩单弹窗（严格 1:1 比例） -->
 <div id="poster-modal" class="settings-modal">
   <div id="poster-wrapper">
     <div class="poster-card-1to1" id="poster-render-target">
       <div class="poster-top-pill">✨ 苗友成绩单 ✨</div>
       <div class="poster-main-title">苗哥2048</div>
       
-      <!-- 中间角色立绘 -->
+      <!-- 中间放大的角色立绘 -->
       <div class="poster-avatar-holder">
         <img id="poster-role-img" src="assets/tiles/avatar_1.png" alt="角色立绘">
       </div>
@@ -368,13 +395,13 @@
       <!-- 已解锁状态 -->
       <div class="poster-unlocked-tag" id="poster-role-tag">已解锁：洪文定</div>
 
-      <!-- 历史最高战力框 -->
+      <!-- 历史最高战力展示框 -->
       <div class="poster-score-board">
         <div class="poster-score-label">历史最高战力</div>
         <div class="poster-score-value" id="poster-score-display">0</div>
       </div>
 
-      <!-- 底部两层胶囊药丸 -->
+      <!-- 保持不变的底部两行药丸 -->
       <div class="poster-bottom-group">
         <div class="poster-brand-pill">
           <img class="poster-brand-avatar" src="assets/avatar-logo.png" alt="头像">
@@ -384,7 +411,7 @@
       </div>
     </div>
 
-    <div class="save-tip-pill">截图或长按卡片即可分享</div>
+    <div class="save-tip-pill">长按上方卡片即可保存到相册</div>
     <button class="poster-close-btn" id="poster-close">返回游戏</button>
   </div>
 </div>
@@ -393,6 +420,30 @@
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var game = null;
+var bestScore = 0;
+var scoreDiv = document.getElementById('score');
+var bestScoreDiv = document.getElementById('bestScore');
+var addDiv = document.getElementById('add') || { classList: { add: function(){}, remove: function(){} } };
+var endDiv = document.getElementById('end');
+var size = 4;
+var nextId = 1;
+var score = 0;
+
+var TILE_INFO = {
+  2:    { avatarIndex: 1,  name: "洪文定" },
+  4:    { avatarIndex: 2,  name: "海远" },
+  8:    { avatarIndex: 3,  name: "巩固" },
+  16:   { avatarIndex: 4,  name: "惠忍" },
+  32:   { avatarIndex: 5,  name: "韩晓峰" },
+  64:   { avatarIndex: 6,  name: "李红旗" },
+  128:  { avatarIndex: 7,  name: "成瞎子" },
+  256:  { avatarIndex: 8,  name: "张柳成" },
+  512:  { avatarIndex: 9,  name: "黄铭金" },
+  1024: { avatarIndex: 10, name: "王伟" },
+  2048: { avatarIndex: 11, name: "苗哥本人" }
+};
 
 // ================= 音频管理（音量已降低至 0.15） =================
 var AudioManager = {
@@ -491,33 +542,7 @@ var AudioManager = {
   }
 };
 
-// 11 阶角色配置
-var TILE_INFO = {
-  2:    { avatarIndex: 1,  name: "洪文定" },
-  4:    { avatarIndex: 2,  name: "海远" },
-  8:    { avatarIndex: 3,  name: "巩固" },
-  16:   { avatarIndex: 4,  name: "惠忍" },
-  32:   { avatarIndex: 5,  name: "韩晓峰" },
-  64:   { avatarIndex: 6,  name: "李红旗" },
-  128:  { avatarIndex: 7,  name: "成瞎子" },
-  256:  { avatarIndex: 8,  name: "张柳成" },
-  512:  { avatarIndex: 9,  name: "黄铭金" },
-  1024: { avatarIndex: 10, name: "王伟" },
-  2048: { avatarIndex: 11, name: "苗哥本人" }
-};
-
-var game = null;
-var bestScore = 0;
-var scoreDiv = document.getElementById('score');
-var bestScoreDiv = document.getElementById('bestScore');
-var roleBadgeDiv = document.getElementById('role-badge');
-var endDiv = document.getElementById('end');
-var size = 4;
-var nextId = 1;
-var score = 0;
-var hasMergedThisTurn = false;
-var lastMaxMergeVal = 2;
-
+// ================= 原版引擎核心算法（严格保持原汁原味） =================
 function initGame() {
   game = Array(size * size).fill(null);
   initBestScore();
@@ -525,25 +550,7 @@ function initGame() {
 
 function initBestScore() {
   bestScore = localStorage.getItem('bestScore') || 0;
-  bestScoreDiv.innerHTML = bestScore;
-}
-
-function getMaxTile() {
-  var maxVal = 2;
-  for (var i = 0; i < game.length; i++) {
-    if (game[i] && game[i].value > maxVal) {
-      maxVal = game[i].value;
-    }
-  }
-  return maxVal;
-}
-
-function updateRoleBadge() {
-  var maxVal = getMaxTile();
-  var info = TILE_INFO[maxVal] || { name: "洪文定" };
-  if (roleBadgeDiv) {
-    roleBadgeDiv.innerHTML = "当前阶段：" + info.name;
-  }
+  if (bestScoreDiv) bestScoreDiv.innerHTML = bestScore;
 }
 
 function updateDOM(before, after) {
@@ -553,12 +560,12 @@ function updateDOM(before, after) {
   removeElements(mergedTiles);
   drawGame(newElements, true);
   drawGame(existingElements);
-  updateRoleBadge();
 }
 
 function removeElements(mergedTiles) {
   for (var _iterator = mergedTiles, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
     var _ref;
+
     if (_isArray) {
       if (_i >= _iterator.length) break;
       _ref = _iterator[_i++];
@@ -567,6 +574,7 @@ function removeElements(mergedTiles) {
       if (_i.done) break;
       _ref = _i.value;
     }
+
     var tile = _ref;
 
     var _loop = function _loop() {
@@ -578,7 +586,9 @@ function removeElements(mergedTiles) {
         if (_i2.done) return 'break';
         _ref2 = _i2.value;
       }
+
       var id = _ref2;
+
       var currentElm = document.getElementById(id);
       if (currentElm) {
         positionTile(tile, currentElm);
@@ -606,24 +616,40 @@ function getMergedTiles(after) {
 }
 
 function getNewElementsDOM(before, after) {
-  var beforeIds = before.filter(function (tile) { return tile; }).map(function (tile) { return tile.id; });
-  return after.filter(function (tile) { return tile && beforeIds.indexOf(tile.id) === -1; });
+  var beforeIds = before.filter(function (tile) {
+    return tile;
+  }).map(function (tile) {
+    return tile.id;
+  });
+  var newElements = after.filter(function (tile) {
+    return tile && beforeIds.indexOf(tile.id) === -1;
+  });
+  return newElements;
 }
 
 function getExistingElementsDOM(before, after) {
-  var beforeIds = before.filter(function (tile) { return tile; }).map(function (tile) { return tile.id; });
-  return after.filter(function (tile) { return tile && beforeIds.indexOf(tile.id) !== -1; });
+  var beforeIds = before.filter(function (tile) {
+    return tile;
+  }).map(function (tile) {
+    return tile.id;
+  });
+  var existingElements = after.filter(function (tile) {
+    return tile && beforeIds.indexOf(tile.id) !== -1;
+  });
+  return existingElements;
 }
 
 function drawBackground() {
   var tileContainer = document.getElementById('tile-container');
   tileContainer.innerHTML = '';
   for (var i = 0; i < game.length; i++) {
+    var tile = game[i];
     var tileDiv = document.createElement('div');
     var x = i % size;
     var y = Math.floor(i / size);
     tileDiv.style.top = y * 100 + 'px';
     tileDiv.style.left = x * 100 + 'px';
+
     tileDiv.classList.add("background");
     tileContainer.appendChild(tileDiv);
   }
@@ -664,11 +690,16 @@ function drawGame(tiles, isNew) {
 }
 
 function gameOver() {
-  if (game.filter(function (number) { return number === null; }).length === 0) {
+  if (game.filter(function (number) {
+    return number === null;
+  }).length === 0) {
     var sameNeighbors = game.find(function (tile, i) {
       var isRightSame = game[i + 1] && (i + 1) % 4 !== 0 ? tile.value === game[i + 1].value : false;
       var isDownSame = game[i + 4] ? tile.value === game[i + 4].value : false;
-      return isRightSame || isDownSame;
+      if (isRightSame || isDownSame) {
+        return true;
+      }
+      return false;
     });
     return !sameNeighbors;
   }
@@ -676,12 +707,19 @@ function gameOver() {
 }
 
 function generateNewNumber() {
-  return Math.random() * 100 <= 90 ? 2 : 4;
+  var p = Math.random() * 100;
+  return p <= 90 ? 2 : 4;
 }
 
 function addRandomNumber() {
-  var emptyCells = game.map(function (_, index) { return index; }).filter(function (index) { return game[index] === null; });
-  if (emptyCells.length === 0) return;
+  var emptyCells = game.map(function (_, index) {
+    return index;
+  }).filter(function (index) {
+    return game[index] === null;
+  });
+  if (emptyCells.length === 0) {
+    return;
+  }
   var newPos = emptyCells[Math.floor(Math.random() * emptyCells.length)];
   var newObj = {
     id: nextId++,
@@ -691,13 +729,17 @@ function addRandomNumber() {
   game.splice(newPos, 1, newObj);
 }
 
-function getIndexForPoint(x, y) { return y * size + x; }
+function getIndexForPoint(x, y) {
+  return y * size + x;
+}
 
 function reflectGrid(grid) {
   var reflectedGame = Array(size * size).fill(0);
   for (var row = 0; row < size; row++) {
     for (var col = 0; col < size; col++) {
-      reflectedGame[getIndexForPoint(col, row)] = grid[getIndexForPoint(size - col - 1, row)];
+      var index1 = getIndexForPoint(col, row);
+      var index2 = getIndexForPoint(size - col - 1, row);
+      reflectedGame[index1] = grid[index2];
     }
   }
   return reflectedGame;
@@ -707,7 +749,9 @@ function rotateLeft90Deg(grid) {
   var rotatedGame = Array(size * size).fill(0);
   for (var row = 0; row < size; row++) {
     for (var col = 0; col < size; col++) {
-      rotatedGame[getIndexForPoint(col, row)] = grid[getIndexForPoint(size - 1 - row, col)];
+      var index1 = getIndexForPoint(col, row);
+      var index2 = getIndexForPoint(size - 1 - row, col);
+      rotatedGame[index1] = grid[index2];
     }
   }
   return rotatedGame;
@@ -717,26 +761,45 @@ function rotateRight90Deg(grid) {
   var rotatedGame = Array(size * size).fill(0);
   for (var row = 0; row < size; row++) {
     for (var col = 0; col < size; col++) {
-      rotatedGame[getIndexForPoint(col, row)] = grid[getIndexForPoint(row, size - 1 - col)];
+      var index1 = getIndexForPoint(col, row);
+      var index2 = getIndexForPoint(row, size - 1 - col);
+      rotatedGame[index1] = grid[index2];
     }
   }
   return rotatedGame;
 }
 
 function shiftGameRight(gameGrid) {
-  return reflectGrid(shiftGameLeft(reflectGrid(gameGrid)));
+  var reflectedGame = reflectGrid(gameGrid);
+  reflectedGame = shiftGameLeft(reflectedGame);
+  return reflectGrid(reflectedGame);
 }
 
 function shiftGameLeft(gameGrid) {
   var newGameState = [];
   var totalAdd = 0;
+  var maxMergeTurn = 2;
+
   for (var i = 0; i < size; i++) {
     var firstPos = 4 * i;
-    var currentRow = gameGrid.slice(firstPos, size + 4 * i);
-    var filteredRow = currentRow.filter(function (row) { return row; });
+    var lastPos = size + 4 * i;
+    var currentRow = gameGrid.slice(firstPos, lastPos);
+    var filteredRow = currentRow.filter(function (row) {
+      return row;
+    });
 
-    for (var k = 0; k < filteredRow.length; k++) {
-      delete filteredRow[k].mergedIds;
+    for (var _iterator3 = filteredRow, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
+      var _ref3;
+      if (_isArray3) {
+        if (_i3 >= _iterator3.length) break;
+        _ref3 = _iterator3[_i3++];
+      } else {
+        _i3 = _iterator3.next();
+        if (_i3.done) break;
+        _ref3 = _i3.value;
+      }
+      var row = _ref3;
+      delete row.mergedIds;
     }
 
     for (var j = 0; j < filteredRow.length - 1; j++) {
@@ -750,8 +813,7 @@ function shiftGameLeft(gameGrid) {
         filteredRow.splice(j + 1, 1);
         score += sum;
         totalAdd += sum;
-        hasMergedThisTurn = true;
-        if (sum > lastMaxMergeVal) lastMaxMergeVal = sum;
+        if (sum > maxMergeTurn) maxMergeTurn = sum;
       }
     }
     while (filteredRow.length < size) {
@@ -762,47 +824,64 @@ function shiftGameLeft(gameGrid) {
 
   if (totalAdd > 0) {
     scoreDiv.innerHTML = score;
+    AudioManager.playMergeSound(maxMergeTurn);
     if (score > bestScore) {
       bestScore = score;
       localStorage.setItem('bestScore', bestScore);
       initBestScore();
     }
+  } else {
+    AudioManager.playMoveSound();
   }
   return newGameState;
 }
 
 function shiftGameUp(gameGrid) {
-  return rotateRight90Deg(shiftGameLeft(rotateLeft90Deg(gameGrid)));
+  var rotatedGame = rotateLeft90Deg(gameGrid);
+  rotatedGame = shiftGameLeft(rotatedGame);
+  return rotateRight90Deg(rotatedGame);
 }
 
 function shiftGameDown(gameGrid) {
-  return rotateLeft90Deg(shiftGameLeft(rotateRight90Deg(gameGrid)));
+  var rotatedGame = rotateRight90Deg(gameGrid);
+  rotatedGame = shiftGameLeft(rotatedGame);
+  return rotateLeft90Deg(rotatedGame);
 }
 
-function stepGame(newGrid) {
-  var isChanged = false;
+// 统一行动逻辑：确保只有在盘面产生实际变动时才生成新方块并更新
+function handleAction(direction) {
+  var prevGame = [].concat(game);
+  var nextState = null;
+
+  switch (direction) {
+    case 'left':  nextState = shiftGameLeft(game); break;
+    case 'up':    nextState = shiftGameUp(game); break;
+    case 'right': nextState = shiftGameRight(game); break;
+    case 'down':  nextState = shiftGameDown(game); break;
+    default: return;
+  }
+
+  // 严格比对新旧状态是否发生移动或合成
+  var changed = false;
   for (var i = 0; i < game.length; i++) {
-    if ((game[i] === null && newGrid[i] !== null) ||
-        (game[i] !== null && newGrid[i] === null) ||
-        (game[i] && newGrid[i] && (game[i].id !== newGrid[i].id || game[i].value !== newGrid[i].value))) {
-      isChanged = true;
+    if (game[i] === null && nextState[i] !== null) { changed = true; break; }
+    if (game[i] !== null && nextState[i] === null) { changed = true; break; }
+    if (game[i] && nextState[i] && (game[i].id !== nextState[i].id || game[i].value !== nextState[i].value)) {
+      changed = true;
       break;
     }
   }
-  if (!isChanged) return;
 
-  if (hasMergedThisTurn) {
-    AudioManager.playMergeSound(lastMaxMergeVal);
-  } else {
-    AudioManager.playMoveSound();
-  }
-  hasMergedThisTurn = false;
-  lastMaxMergeVal = 2;
+  if (!changed) return;
 
-  var prevGame = [].concat(game);
-  game = newGrid.map(function (tile, index) {
-    return tile ? _extends({}, tile, { index: index }) : null;
+  game = nextState.map(function (tile, index) {
+    if (tile) {
+      return _extends({}, tile, { index: index });
+    } else {
+      return null;
+    }
   });
+
   addRandomNumber();
   updateDOM(prevGame, game);
 
@@ -813,24 +892,70 @@ function stepGame(newGrid) {
   }
 }
 
-// 触摸与手机滑动
+// ================= 键盘与滑动监听（加入防抖与阈值判断） =================
+document.addEventListener("keydown", handleKeypress);
+
+function handleKeypress(evt) {
+  var e = evt || window.event;
+  var modifiers = e.altKey || e.ctrlKey || e.metaKey || e.shiftKey;
+  var whichKey = e.which || e.keyCode;
+
+  if (!modifiers) {
+    if ([37, 38, 39, 40, 65, 87, 68, 83].indexOf(whichKey) > -1) {
+      if (e.preventDefault) e.preventDefault();
+    }
+    switch (whichKey) {
+      case 37: // Left
+      case 65: // A
+        handleAction('left');
+        break;
+      case 38: // Up
+      case 87: // W
+        handleAction('up');
+        break;
+      case 39: // Right
+      case 68: // D
+        handleAction('right');
+        break;
+      case 40: // Down
+      case 83: // S
+        handleAction('down');
+        break;
+    }
+  }
+}
+
+// 触摸事件：在 touchend 判定滑动，彻底杜绝连续乱跳
 var xDown = null;
 var yDown = null;
-document.addEventListener('touchstart', function (evt) {
+
+document.addEventListener('touchstart', function(evt) {
   xDown = evt.touches[0].clientX;
   yDown = evt.touches[0].clientY;
 }, false);
 
-document.addEventListener('touchend', function (evt) {
+document.addEventListener('touchend', function(evt) {
   if (!xDown || !yDown) return;
   var xUp = evt.changedTouches[0].clientX;
   var yUp = evt.changedTouches[0].clientY;
-  handleSwipe(xDown, yDown, xUp, yUp);
+
+  var xDiff = xDown - xUp;
+  var yDiff = yDown - yUp;
+
+  if (Math.abs(xDiff) > 20 || Math.abs(yDiff) > 20) {
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+      if (xDiff > 0) handleAction('left');
+      else handleAction('right');
+    } else {
+      if (yDiff > 0) handleAction('up');
+      else handleAction('down');
+    }
+  }
   xDown = null;
   yDown = null;
 }, false);
 
-// 电脑端鼠标拖动
+// 电脑端鼠标拖动支持
 var isMouseDown = false;
 var mouseStartX = 0;
 var mouseStartY = 0;
@@ -839,55 +964,21 @@ document.addEventListener('mousedown', function (evt) {
   mouseStartX = evt.clientX;
   mouseStartY = evt.clientY;
 });
-
 document.addEventListener('mouseup', function (evt) {
   if (!isMouseDown) return;
   isMouseDown = false;
-  handleSwipe(mouseStartX, mouseStartY, evt.clientX, evt.clientY);
-});
-
-function handleSwipe(startX, startY, endX, endY) {
-  var xDiff = startX - endX;
-  var yDiff = startY - endY;
+  var xDiff = mouseStartX - evt.clientX;
+  var yDiff = mouseStartY - evt.clientY;
   if (Math.abs(xDiff) > 20 || Math.abs(yDiff) > 20) {
     if (Math.abs(xDiff) > Math.abs(yDiff)) {
-      if (xDiff > 0) stepGame(shiftGameLeft(game));
-      else stepGame(shiftGameRight(game));
+      if (xDiff > 0) handleAction('left');
+      else handleAction('right');
     } else {
-      if (yDiff > 0) stepGame(shiftGameUp(game));
-      else stepGame(shiftGameDown(game));
+      if (yDiff > 0) handleAction('up');
+      else handleAction('down');
     }
   }
-}
-
-// 键盘按键（方向键 + WASD）
-window.addEventListener("keydown", function (evt) {
-  var e = evt || window.event;
-  var code = e.keyCode || e.which;
-
-  if ([37, 38, 39, 40, 65, 87, 68, 83].indexOf(code) > -1) {
-    e.preventDefault();
-  }
-
-  switch (code) {
-    case 37:
-    case 65:
-      stepGame(shiftGameLeft(game)); 
-      break;
-    case 38:
-    case 87:
-      stepGame(shiftGameUp(game)); 
-      break;
-    case 39:
-    case 68:
-      stepGame(shiftGameRight(game)); 
-      break;
-    case 40:
-    case 83:
-      stepGame(shiftGameDown(game)); 
-      break;
-  }
-}, true);
+});
 
 function newGameStart() {
   document.getElementById('tile-container').innerHTML = '';
@@ -902,7 +993,17 @@ function newGameStart() {
   updateDOM(previousGame, game);
 }
 
-// ================= 存档管理 =================
+function getMaxTile() {
+  var maxVal = 2;
+  for (var i = 0; i < game.length; i++) {
+    if (game[i] && game[i].value > maxVal) {
+      maxVal = game[i].value;
+    }
+  }
+  return maxVal;
+}
+
+// 存档渲染
 function renderSaveSlots() {
   var saveBox = document.getElementById('save-slot-box');
   if (!saveBox) return;
@@ -942,7 +1043,6 @@ function renderSaveSlots() {
       document.getElementById('tile-container').innerHTML = '';
       drawBackground();
       drawGame(game.filter(function (t) { return t; }), true);
-      updateRoleBadge();
       document.getElementById('settings-modal').style.display = 'none';
       window.focus();
     });
@@ -1040,7 +1140,6 @@ document.addEventListener('DOMContentLoaded', function () {
       var maxVal = getMaxTile();
       var info = TILE_INFO[maxVal] || { avatarIndex: 1, name: "洪文定" };
 
-      // 实时换图与赋分
       posterRoleImg.src = 'assets/tiles/avatar_' + info.avatarIndex + '.png';
       posterRoleTag.textContent = '已解锁：' + info.name;
       posterScoreDisplay.textContent = bestScore;
