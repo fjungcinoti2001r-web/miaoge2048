@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
+<title>苗哥2048</title>
+
+<link rel="stylesheet" href="css/reset.min.css">
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+<div id="intro-mask">
+  <div class="intro-content">
+    <img src="assets/avatar-logo.png" class="intro-logo" alt="谢苗">
+    <div class="intro-title-1">苗哥2048</div>
+    <div class="intro-title-2">谢苗粉丝向合成小游戏</div>
+    <div class="intro-title-3">喜欢苗哥，就一直合下去</div>
+    <button class="intro-enter-btn" id="enter-game-btn">点击进入</button>
+  </div>
+</div>
+
+<div id="arcade-container">
+<div class="top-bar">
+	<div class="header-layout"><img src="assets/avatar-logo.png" class="logo-img"><div class="title-group"><h1>苗哥2048</h1><div class="subtitle">演员谢苗粉丝向</div></div></div>
+	<div class="header-layout"><button class="icon-btn" id="bgm-toggle" title="背景音乐">🎵</button><button class="icon-btn" id="settings-toggle" title="设置">⚙️</button><button class="icon-btn" id="poster-toggle" title="成绩单">📸</button><div class="score-board"><div class="score-label">总战力</div><div class="score-val" id="score">0</div></div></div>
+</div>
+<div class="header-info-row"><div id="role-badge">当前阶段：初出茅庐</div><div class="score-board"><div class="score-label">最佳战绩</div><div class="score-val" id="bestScore">0</div></div></div>
+
+	<div class="directions"><p><strong>玩法：</strong>滑动或使用方向键移动苗哥卡片，相同卡片相遇即可合成更高阶角色！</p></div>
+	<div class="game-wrapper"><div class="game">
+		<div id="tile-container" class="tile-container"></div>
+		<div class="end" id="end">游戏结束<div class="monkey">🙈</div><button class="btn not-recommended__item js-restart-btn" id="try-again">再试一次</button></div>
+	</div></div>
+
+	<div id="bottom-tools" class="not-recommended">
+		<button class="btn not-recommended__item js-restart-btn" id="restart">重新开始</button>
+	</div>
+</div>
+<div id="settings-modal" class="settings-modal"><div class="settings-box"><div class="settings-title">系统菜单</div><button class="settings-btn btn-green" id="save-game">💾 记录当前进度</button><button class="settings-btn btn-blue" id="load-game">📂 读取存档</button><button class="settings-btn btn-blue" id="modal-restart">🔄 重新开始</button><button class="settings-btn btn-pink" id="modal-close">返回游戏</button><div id="save-hint"></div></div></div>
+<div id="poster-modal" class="settings-modal"><div id="capture-area" class="settings-box"><div class="poster-header-pill">✨ 苗友成绩单 ✨</div><div class="poster-title">苗哥2048</div><div id="poster-avatar-preview" class="poster-avatar"></div><div id="poster-role-text" class="poster-role-tag">已达成：初出茅庐</div><div class="poster-score-box">本局战力 <strong id="poster-score">0</strong><br>最高战绩 <strong id="poster-best">0</strong></div><div class="save-tip">继续合成，解锁更多苗哥角色！</div><button class="settings-btn btn-pink" id="poster-close">返回游戏</button></div></div>
+
+<script src="js/index.js"></script>
+</body>
+</html>
