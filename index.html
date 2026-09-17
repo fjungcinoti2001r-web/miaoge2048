@@ -21,8 +21,6 @@
   .tile--512  { background-image: url('assets/tiles/avatar_9.png') !important; }
   .tile--1024 { background-image: url('assets/tiles/avatar_10.png') !important; }
   .tile--2048 { background-image: url('assets/tiles/avatar_11.png') !important; }
-  .tile--4096 { background-image: url('assets/tiles/avatar_12.png') !important; }
-  .tile--8192 { background-image: url('assets/tiles/avatar_13.png') !important; }
 
   .tile {
     background-size: cover;
@@ -35,9 +33,9 @@
 </head>
 
 <body>
-<!-- 音频播放器元素 -->
+<!-- BGM 直接存放在 assets/ 目录下 -->
 <audio id="audio-bgm" loop preload="auto">
-  <source src="assets/audio/bgm.mp3" type="audio/mpeg">
+  <source src="assets/bgm.mp3" type="audio/mpeg">
 </audio>
 
 <div id="intro-mask">
@@ -59,7 +57,10 @@
     <div class="score-board"><div class="score-label">总战力</div><div class="score-val" id="score">0</div></div>
   </div>
 </div>
-<div class="header-info-row"><div id="role-badge">当前阶段：初出茅庐</div><div class="score-board"><div class="score-label">最佳战绩</div><div class="score-val" id="bestScore">0</div></div></div>
+<div class="header-info-row">
+  <div id="role-badge">当前阶段：洪文定</div>
+  <div class="score-board"><div class="score-label">最佳战绩</div><div class="score-val" id="bestScore">0</div></div>
+</div>
 
 	<div class="directions"><p><strong>玩法：</strong>滑动、按方向键或 WASD 移动苗哥卡片，相同卡片相遇即可合成更高阶角色！</p></div>
 	<div class="game-wrapper"><div class="game">
@@ -73,14 +74,14 @@
 </div>
 
 <div id="settings-modal" class="settings-modal"><div class="settings-box"><div class="settings-title">系统菜单</div><button class="settings-btn btn-green" id="save-game">💾 记录当前进度</button><button class="settings-btn btn-blue" id="load-game">📂 读取存档</button><button class="settings-btn btn-blue" id="modal-restart">🔄 重新开始</button><button class="settings-btn btn-pink" id="modal-close">返回游戏</button><div id="save-hint"></div></div></div>
-<div id="poster-modal" class="settings-modal"><div id="capture-area" class="settings-box"><div class="poster-header-pill">✨ 苗友成绩单 ✨</div><div class="poster-title">苗哥2048</div><div id="poster-avatar-preview" class="poster-avatar" style="background-size:cover;background-position:center;"></div><div id="poster-role-text" class="poster-role-tag">已达成：初出茅庐</div><div class="poster-score-box">本局战力 <strong id="poster-score">0</strong><br>最高战绩 <strong id="poster-best">0</strong></div><div class="save-tip">继续合成，解锁更多苗哥角色！</div><button class="settings-btn btn-pink" id="poster-close">返回游戏</button></div></div>
+<div id="poster-modal" class="settings-modal"><div id="capture-area" class="settings-box"><div class="poster-header-pill">✨ 苗友成绩单 ✨</div><div class="poster-title">苗哥2048</div><div id="poster-avatar-preview" class="poster-avatar" style="background-size:cover;background-position:center;"></div><div id="poster-role-text" class="poster-role-tag">已达成：洪文定</div><div class="poster-score-box">本局战力 <strong id="poster-score">0</strong><br>最高战绩 <strong id="poster-best">0</strong></div><div class="save-tip">继续合成，解锁更多苗哥角色！</div><button class="settings-btn btn-pink" id="poster-close">返回游戏</button></div></div>
 
 <script>
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-// ================= 音频管理系统 =================
+// ================= 音频管理 =================
 var AudioManager = {
   bgmAudio: null,
   isBgmOn: false,
@@ -88,14 +89,12 @@ var AudioManager = {
 
   init: function() {
     this.bgmAudio = document.getElementById('audio-bgm');
-    // 初始化 Web Audio API 生成动态合成音效
     var AudioCtxClass = window.AudioContext || window.webkitAudioContext;
     if (AudioCtxClass) {
       this.audioCtx = new AudioCtxClass();
     }
   },
 
-  // 播放合成/升级音效（清脆武打命中音）
   playMergeSound: function(value) {
     if (!this.audioCtx) return;
     if (this.audioCtx.state === 'suspended') {
@@ -105,9 +104,7 @@ var AudioManager = {
       var osc = this.audioCtx.createOscillator();
       var gain = this.audioCtx.createGain();
       osc.type = 'triangle';
-      
-      // 合成阶级越高，音调与打击感越亮
-      var baseFreq = 320 + Math.min(Math.log2(value) * 60, 600);
+      var baseFreq = 300 + Math.min(Math.log2(value) * 65, 700);
       osc.frequency.setValueAtTime(baseFreq, this.audioCtx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, this.audioCtx.currentTime + 0.12);
 
@@ -121,7 +118,6 @@ var AudioManager = {
     } catch(e) {}
   },
 
-  // 播放滑动音效（轻风声）
   playMoveSound: function() {
     if (!this.audioCtx) return;
     if (this.audioCtx.state === 'suspended') {
@@ -144,42 +140,58 @@ var AudioManager = {
     } catch(e) {}
   },
 
-  toggleBgm: function() {
-    if (!this.bgmAudio) return false;
-    if (this.isBgmOn) {
+  playBgm: function() {
+    var self = this;
+    if (!self.bgmAudio) return;
+    if (self.audioCtx && self.audioCtx.state === 'suspended') {
+      self.audioCtx.resume();
+    }
+    var promise = self.bgmAudio.play();
+    if (promise !== undefined) {
+      promise.then(function() {
+        self.isBgmOn = true;
+        var btn = document.getElementById('bgm-toggle');
+        if (btn) btn.textContent = '🎵';
+      }).catch(function(err) {
+        self.isBgmOn = false;
+        var btn = document.getElementById('bgm-toggle');
+        if (btn) btn.textContent = '🔇';
+      });
+    }
+  },
+
+  pauseBgm: function() {
+    if (this.bgmAudio) {
       this.bgmAudio.pause();
       this.isBgmOn = false;
+      var btn = document.getElementById('bgm-toggle');
+      if (btn) btn.textContent = '🔇';
+    }
+  },
+
+  toggleBgm: function() {
+    if (this.isBgmOn) {
+      this.pauseBgm();
     } else {
-      var playPromise = this.bgmAudio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(function() {
-          AudioManager.isBgmOn = true;
-          document.getElementById('bgm-toggle').textContent = '🎵';
-        }).catch(function() {
-          AudioManager.isBgmOn = false;
-          document.getElementById('bgm-toggle').textContent = '🔇';
-        });
-      }
-      this.isBgmOn = true;
+      this.playBgm();
     }
     return this.isBgmOn;
   }
 };
 
+// 角色阶级映射字典
 var TILE_INFO = {
-  2:    { avatarIndex: 1,  stage: "初出茅庐" },
-  4:    { avatarIndex: 2,  stage: "身手不凡" },
-  8:    { avatarIndex: 3,  stage: "名声鹊起" },
-  16:   { avatarIndex: 4,  stage: "独当一面" },
-  32:   { avatarIndex: 5,  stage: "炉火纯青" },
-  64:   { avatarIndex: 6,  stage: "听风辨位" },
-  128:  { avatarIndex: 7,  stage: "拳风破浪" },
-  256:  { avatarIndex: 8,  stage: "一代宗师" },
-  512:  { avatarIndex: 9,  stage: "气吞万里" },
-  1024: { avatarIndex: 10, stage: "巅峰对决" },
-  2048: { avatarIndex: 11, stage: "武冠群雄" },
-  4096: { avatarIndex: 12, stage: "傲视苍穹" },
-  8192: { avatarIndex: 13, stage: "神乎其技" }
+  2:    { avatarIndex: 1,  name: "洪文定" },
+  4:    { avatarIndex: 2,  name: "海远" },
+  8:    { avatarIndex: 3,  name: "巩固" },
+  16:   { avatarIndex: 4,  name: "惠忍" },
+  32:   { avatarIndex: 5,  name: "韩晓峰" },
+  64:   { avatarIndex: 6,  name: "李红旗" },
+  128:  { avatarIndex: 7,  name: "成瞎子" },
+  256:  { avatarIndex: 8,  name: "张柳成" },
+  512:  { avatarIndex: 9,  name: "黄铭金" },
+  1024: { avatarIndex: 10, name: "王伟" },
+  2048: { avatarIndex: 11, name: "苗哥本人" }
 };
 
 var game = null;
@@ -216,9 +228,9 @@ function getMaxTile() {
 
 function updateRoleBadge() {
   var maxVal = getMaxTile();
-  var info = TILE_INFO[maxVal] || { stage: "登峰造极" };
+  var info = TILE_INFO[maxVal] || { name: "苗哥本人" };
   if (roleBadgeDiv) {
-    roleBadgeDiv.innerHTML = "当前阶段：" + info.stage;
+    roleBadgeDiv.innerHTML = "当前阶段：" + info.name;
   }
 }
 
@@ -479,7 +491,6 @@ function stepGame(newGrid) {
   }
   if (!isChanged) return;
 
-  // 播放对应音效
   if (hasMergedThisTurn) {
     AudioManager.playMergeSound(lastMaxMergeVal);
   } else {
@@ -601,8 +612,8 @@ document.addEventListener('DOMContentLoaded', function () {
     enterBtn.addEventListener('click', function () {
       introMask.style.display = 'none';
       window.focus();
-      // 用户主动交互后启动 BGM
-      AudioManager.toggleBgm();
+      // 用户主动交互时立即播放 BGM
+      AudioManager.playBgm();
     });
   }
 
@@ -610,8 +621,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var bgmBtn = document.getElementById('bgm-toggle');
   if (bgmBtn) {
     bgmBtn.addEventListener('click', function() {
-      var playing = AudioManager.toggleBgm();
-      bgmBtn.textContent = playing ? '🎵' : '🔇';
+      AudioManager.toggleBgm();
     });
   }
 
@@ -683,8 +693,8 @@ document.addEventListener('DOMContentLoaded', function () {
   if (posterToggle) {
     posterToggle.addEventListener('click', function () {
       var maxVal = getMaxTile();
-      var info = TILE_INFO[maxVal] || { avatarIndex: 1, stage: "武冠群雄" };
-      if (posterRoleText) posterRoleText.innerHTML = "已达成：" + info.stage;
+      var info = TILE_INFO[maxVal] || { avatarIndex: 1, name: "洪文定" };
+      if (posterRoleText) posterRoleText.innerHTML = "已达成：" + info.name;
       if (posterAvatar) posterAvatar.style.backgroundImage = 'url("assets/tiles/avatar_' + info.avatarIndex + '.png")';
       if (posterScore) posterScore.innerHTML = score;
       if (posterBest) posterBest.innerHTML = bestScore;
